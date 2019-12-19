@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="ContactBook.VIew.Alphabet"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ContactBook.VIew"
+             xmlns:vm="clr-namespace:ContactBook.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="30">
+    <Grid>
+        <Button Margin="1" MinWidth="20" Width="30" MinHeight="20" Height="20" Content="{Binding Letter, FallbackValue=N/A}"
+               Command="{Binding SearchByLetterCommand}" >
+        </Button>
+    </Grid>
+</UserControl>

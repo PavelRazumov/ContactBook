@@ -1,0 +1,18 @@
+﻿<Application x:Class="ContactBook.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ContactBook"
+             xmlns:vm="clr-namespace:ContactBook.ViewModel"
+             xmlns:v="clr-namespace:ContactBook.VIew"
+             xmlns:helper="clr-namespace:ContactBook.VisibilityHelper"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <DataTemplate DataType="{x:Type vm:BookViewModel}">
+            <v:BookView></v:BookView>
+        </DataTemplate>
+
+        <helper:VisibilityConverter x:Key="isEditConverter"></helper:VisibilityConverter>
+        <helper:NullToVisibilityConverter x:Key="SelectedContactConverter"></helper:NullToVisibilityConverter>
+        <SolidColorBrush x:Key="BlueGrey" Color="#FF778CA3"></SolidColorBrush>
+    </Application.Resources>
+</Application>

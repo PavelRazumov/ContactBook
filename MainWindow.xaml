@@ -1,0 +1,69 @@
+﻿<Window x:Class="ContactBook.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ContactBook.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:AppViewModel>
+           
+        </local:AppViewModel>
+    </Window.DataContext>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Height="40" Background="{StaticResource BlueGrey}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition>
+                  
+                </ColumnDefinition>
+                <ColumnDefinition>
+
+                </ColumnDefinition>
+                <ColumnDefinition>
+
+                </ColumnDefinition>
+                <ColumnDefinition>
+
+                </ColumnDefinition>
+                <ColumnDefinition>
+
+                </ColumnDefinition>
+                <ColumnDefinition>
+
+                </ColumnDefinition>
+                <ColumnDefinition>
+
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Button Content="Birthday Contacts" Command="{Binding BookVm.LoadBirthDayCommand}">
+                </Button>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Button Content="All Contacts" Command="{Binding BookVm.LoadContactsCommand}">
+                </Button>
+            </Grid>
+            <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="50" Margin="1" Content="Remove" Command="{Binding BookVm.ContactVM.DeleteCommand}">
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="50" Margin="1" Content="Add" Command="{Binding BookVm.ContactVM.AddCommand}">
+                </Button>
+            </StackPanel>
+
+            <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="50" Margin="1" Content="Edit" Command="{Binding BookVm.ContactVM.EditCommand}">
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid DockPanel.Dock="Bottom">
+            <ContentControl Content="{Binding CurrentView}">
+               
+            </ContentControl>
+        </Grid>
+    </DockPanel>
+</Window>
