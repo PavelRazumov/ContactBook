@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ContactBook.ViewModel
@@ -24,6 +25,17 @@ namespace ContactBook.ViewModel
         }
 
         private AlphabetViewModel _alphaBetVM;
+
+        private string _searchQuery;
+        public string SearchQuery
+        {
+            get { return _searchQuery; }
+            set { OnPropertyChanged(ref _searchQuery, value); }
+        }
+
+
+        public string CurLetter;
+        public Button CurLetterButton;
 
         public AlphabetViewModel AlphaBetVM
         {
@@ -44,6 +56,7 @@ namespace ContactBook.ViewModel
             AlphaBetVM = new AlphabetViewModel();
             
             _service = service;
+            //ContactVM.LoadContacts((await _service.GetContacts()));
 
             LoadContactsCommand = new RelayCommand(LoadDataContact);
             LoadBirthDayCommand = new RelayCommand(LoadBirthDayContact);
@@ -51,25 +64,44 @@ namespace ContactBook.ViewModel
 
     
 
-        public void LoadDataContact()
+        public async void LoadDataContact()
         {
-            
-            ContactVM.LoadContacts(_service.GetContacts());
-            AlphaBetVM.LoadAlphaBet(_service.GetContacts());
-            _contactVM.PropertyChanged += _contactVM_PropertyChanged;
+
+            Func<Contact, bool> searchQueryExpr = Search();
+            Func<Contact, bool> searchQueryExprIfLetter = LetterSelect();
+
+            ContactVM.LoadContacts((await _service.GetContacts()).Where(c => searchQueryExpr(c) && searchQueryExprIfLetter(c)));
 
         }
 
-        private void _contactVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        Func<Contact, bool> Search()
         {
-            AlphaBetVM.LoadAlphaBet(_service.GetContacts());
+            if (String.IsNullOrEmpty(SearchQuery))
+            {
+                return c => true;
+            }
+            string SearchQueryToLower = SearchQuery.ToLower();
+
+            Func<Contact, bool> searchQueryExpr =
+                (Contact c) => String.IsNullOrEmpty(SearchQuery) ||
+                    (c.PhoneNumber.Contains(SearchQuery)) ||
+                    (c.FirstName.ToLower().Contains(SearchQueryToLower)) ||
+                    (c.PhoneNumber.Contains(SearchQuery)) ||
+                    (c.Email.Contains(SearchQuery));
+            return searchQueryExpr;
         }
 
-        private void LoadBirthDayContact()
+        Func<Contact, bool> LetterSelect()
         {
-            var allContacts = _service.GetContacts();    
+            Func<Contact, bool> searchQueryExprIfLetter =
+                (Contact c) => String.IsNullOrEmpty(CurLetter) || c.FirstName.ToLower().StartsWith(CurLetter.ToLower());
+            return searchQueryExprIfLetter;
+        }
+
+        private async void LoadBirthDayContact()
+        {
             
-            ContactVM.LoadContacts(allContacts.Where(contact => 
+            ContactVM.LoadContacts((await _service.GetContacts()).Where(contact => 
                 (new DateTime(
                    DateTime.Today.Year,
                    contact.BirthDate.Month,

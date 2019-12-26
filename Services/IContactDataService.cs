@@ -9,7 +9,7 @@ namespace ContactBook.Services
 {
     public interface IContactDataService
     {
-        IEnumerable<Contact> GetContacts();
+        Task<IEnumerable<Contact>> GetContacts();
         void Save(IEnumerable<Contact> contacts);
     }
 }

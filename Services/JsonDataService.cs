@@ -12,7 +12,7 @@ namespace ContactBook.Services
     public class JsonDataService : IContactDataService
     {
         private string filePath = $"{Environment.CurrentDirectory}\\contacts.json";
-        public IEnumerable<Contact> GetContacts()
+        public Task<IEnumerable<Contact>> GetContacts()
         {
             if (!File.Exists(filePath))
             {
@@ -21,13 +21,13 @@ namespace ContactBook.Services
           
             var deserializeData = File.ReadAllText(filePath);
 
-            var contacts = JsonConvert.DeserializeObject<List<Contact>>(deserializeData);
+            var contacts = JsonConvert.DeserializeObject<IEnumerable<Contact>>(deserializeData);
 
             if (contacts == null)
             {
-                return new List<Contact>();
+                return Task.FromResult(new List<Contact>().AsEnumerable());
             }
-            return contacts;
+            return Task.FromResult(contacts.AsEnumerable());
            
                         
         }
